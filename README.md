@@ -21,6 +21,12 @@ npm run lint
 npm run build
 ```
 
+## Publish (GitHub Pages)
+
+The public site is served from the `gh-pages` branch at https://yahyasbini.github.io/sura-dubai/.
+`npm run build:pages` writes a static copy to `.next-pages/`; its contents (plus an empty
+`.nojekyll` file) are what goes on that branch.
+
 ## Where things are
 
 - `src/content/chapters.ts`: all wording of the site
