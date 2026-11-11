@@ -7,9 +7,9 @@
 export const SHOW_PLACEHOLDER_TAGS = true;
 
 export const hook = {
-  /** Drop the real video at public/pitch/hook.mp4. Until then an animated hook plays instead. */
+  /** Plays first, before the demo. If the file is missing, an animated hook plays instead. */
   video: "/pitch/hook.mp4",
-  poster: "",
+  poster: "/pitch/hook-poster.jpg",
   /** Lines of the animated hook used while there is no video. */
   lines: [
     "Dubai, 2026.",
@@ -27,9 +27,7 @@ export const intro = {
   descriptor: "Geospatial sky operating system",
   contact: {
     placeholder: true,
-    name: "Yahya Sbini, Founder",
     email: "hello@sura.ae",
-    phone: "+971 50 000 0000",
     web: "sura.ae",
   },
 };
@@ -320,7 +318,7 @@ export const team = {
   title: "The team.",
   placeholder: true,
   members: [
-    { name: "Yahya Sbini", role: "Founder & CEO", text: "Product and geospatial systems." },
+    { name: "Team member", role: "Founder & CEO", text: "Product and geospatial systems." },
     { name: "Team member", role: "CTO", text: "Real-time systems and 3D." },
     { name: "Team member", role: "Head of Aviation", text: "UTM and drone regulation." },
     { name: "Team member", role: "Head of Partnerships", text: "Government and operators." },

@@ -139,13 +139,14 @@ const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 export function HookSlide({ active, onDone }: { active: boolean; onDone: () => void }) {
   const video = useRef<HTMLVideoElement>(null);
   const [hasVideo, setHasVideo] = useState<boolean | null>(null);
-  const [muted, setMuted] = useState(true);
+  const [muted, setMuted] = useState(false);
+  const [playing, setPlaying] = useState(false);
   const [line, setLine] = useState(0);
 
   useEffect(() => {
     let live = true;
     fetch(`${basePath}${hook.video}`, { method: "HEAD" })
-      .then((r) => live && !r.ok && setHasVideo(false))
+      .then((r) => live && setHasVideo(r.ok))
       .catch(() => live && setHasVideo(false));
     return () => {
       live = false;
@@ -153,13 +154,24 @@ export function HookSlide({ active, onDone }: { active: boolean; onDone: () => v
   }, []);
 
   useEffect(() => {
+    if (active) return;
+    video.current?.pause();
+    setPlaying(false);
+  }, [active]);
+
+  const play = () => {
     const v = video.current;
-    if (!v || !hasVideo) return;
-    if (active) {
-      v.currentTime = 0;
-      v.play().catch(() => {});
-    } else v.pause();
-  }, [active, hasVideo]);
+    if (!v) return;
+    v.currentTime = 0;
+    v.muted = false;
+    setMuted(false);
+    setPlaying(true);
+    v.play().catch(() => {
+      v.muted = true;
+      setMuted(true);
+      v.play().catch(() => setPlaying(false));
+    });
+  };
 
   useEffect(() => {
     if (!active || hasVideo !== false) return;
@@ -176,17 +188,38 @@ export function HookSlide({ active, onDone }: { active: boolean; onDone: () => v
         <video
           ref={video}
           src={`${basePath}${hook.video}`}
-          poster={hook.poster || undefined}
+          poster={hook.poster ? `${basePath}${hook.poster}` : undefined}
           muted={muted}
           playsInline
           preload="auto"
-          onCanPlay={() => setHasVideo(true)}
           onError={() => setHasVideo(false)}
           onEnded={onDone}
           className={`absolute inset-0 h-full w-full bg-night object-cover transition-opacity duration-700 ${
             hasVideo ? "opacity-100" : "opacity-0"
           }`}
         />
+      )}
+
+      {hasVideo && (
+        <div
+          className={`absolute inset-0 grid place-items-center bg-night/35 transition-opacity duration-500 ${
+            playing ? "pointer-events-none opacity-0" : "opacity-100"
+          }`}
+        >
+          <button
+            type="button"
+            onClick={play}
+            tabIndex={playing || !active ? -1 : 0}
+            className="flex min-h-14 items-center gap-4 rounded-full bg-sand py-2 pr-8 pl-2 text-lg font-medium text-night shadow-[0_20px_50px_-20px_rgb(0_0_0/0.6)] transition-transform duration-200 hover:scale-[1.03]"
+          >
+            <span className="grid h-12 w-12 place-items-center rounded-full bg-night text-sand">
+              <svg viewBox="0 0 16 16" className="ml-0.5 h-4 w-4" aria-hidden="true">
+                <path d="M4 2.5v11l9-5.5z" fill="currentColor" />
+              </svg>
+            </span>
+            Play intro
+          </button>
+        </div>
       )}
 
       {hasVideo === false && (
@@ -230,7 +263,7 @@ export function HookSlide({ active, onDone }: { active: boolean; onDone: () => v
       )}
 
       <div className={`absolute right-5 bottom-5 z-10 flex items-center gap-2 transition-opacity duration-500 md:right-10 md:bottom-8 ${active ? "opacity-100" : "pointer-events-none opacity-0"}`}>
-        {hasVideo && (
+        {hasVideo && playing && (
           <button type="button" onClick={() => setMuted((m) => !m)} className="pitch-chip">
             {muted ? "Sound on" : "Sound off"}
           </button>
@@ -274,12 +307,8 @@ export function IntroSlide({ active }: { active: boolean }) {
             <Placeholder show={c.placeholder} />
           </p>
           <dl className="mt-3 grid grid-cols-[auto_1fr] gap-x-5 gap-y-1.5 text-[0.9375rem]">
-            <dt className="text-ink-soft">Name</dt>
-            <dd>{c.name}</dd>
             <dt className="text-ink-soft">Email</dt>
             <dd>{c.email}</dd>
-            <dt className="text-ink-soft">Phone</dt>
-            <dd className="tabular-nums">{c.phone}</dd>
             <dt className="text-ink-soft">Web</dt>
             <dd>{c.web}</dd>
           </dl>
@@ -988,9 +1017,8 @@ export function AskSlide({ active, onRestart }: { active: boolean; onRestart: ()
               <p className="mt-5 text-[1.0625rem] leading-relaxed text-ink-soft">{ask.verseEn}</p>
             </Line>
             <Line i={7} className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-night/15 pt-5 text-sm">
-              <span className="font-medium">{c.name}</span>
-              <span className="text-ink-soft">{c.email}</span>
-              <span className="text-ink-soft tabular-nums">{c.phone}</span>
+              <span className="font-medium">{c.email}</span>
+              <span className="text-ink-soft">{c.web}</span>
               <button
                 type="button"
                 onClick={onRestart}
