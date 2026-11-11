@@ -162,6 +162,7 @@ export function Routes({ city }: { city: City }) {
   const label = useRef<HTMLDivElement>(null);
   const labelAnchor = useRef<THREE.Group>(null);
   const lastCode = useRef("");
+  const tagged = useRef(-1);
 
   const { curves, tubes, tubeMat, drones, droneMat, prisms, prismMat } = useMemo(() => {
     const curves = [planRoute(city, 0, 1, 2, 2), planRoute(city, 1, 0, -1, 0), planRoute(city, 2, -2, -3, -2)];
@@ -264,8 +265,9 @@ export function Routes({ city }: { city: City }) {
   }, [city]);
 
   const point = useMemo(() => new THREE.Vector3(), []);
+  const ndc = useMemo(() => new THREE.Vector3(), []);
 
-  useFrame(() => {
+  useFrame(({ camera }) => {
     if (u.uDrones.value <= 0.001) {
       if (label.current) label.current.style.opacity = "0";
       return;
@@ -273,6 +275,11 @@ export function Routes({ city }: { city: City }) {
     const dronePos = drones.attributes.position as THREE.BufferAttribute;
     const prismPos = prisms.attributes.aOffset as THREE.InstancedBufferAttribute;
     const time = u.uTime.value;
+    // The address tag stays on one drone while it is in view, then moves to the nearest visible one.
+    let keep = false;
+    let nearest = -1;
+    let nearestDist = Infinity;
+    const codes: string[] = [];
     curves.forEach((curve, layer) => {
       for (let k = 0; k < DRONES_PER_ROUTE; k++) {
         const i = layer * DRONES_PER_ROUTE + k;
@@ -282,21 +289,31 @@ export function Routes({ city }: { city: City }) {
         const [q, r] = cellAt(city, point.x, point.z);
         const [cx, cz] = cellCenter(city, q, r);
         prismPos.setXYZ(i, cx, LAYER_ALTITUDES[layer], cz);
-        if (layer === 1 && k === 0) {
-          labelAnchor.current?.position.copy(point);
-          const code = cellCode(city, layer, q, r);
-          if (label.current && code !== lastCode.current) {
-            label.current.textContent = code;
-            lastCode.current = code;
-          }
+        codes[i] = cellCode(city, layer, q, r);
+        ndc.copy(point).project(camera);
+        const dist = point.distanceTo(camera.position);
+        const visible = Math.abs(ndc.x) < 0.72 && Math.abs(ndc.y) < 0.6 && ndc.z < 1 && dist > 2.5 && dist < 26;
+        if (visible && i === tagged.current) keep = true;
+        if (visible && dist < nearestDist) {
+          nearestDist = dist;
+          nearest = i;
         }
       }
     });
     dronePos.needsUpdate = true;
     prismPos.needsUpdate = true;
+    if (!keep) tagged.current = nearest;
+    const i = tagged.current;
+    if (i >= 0) {
+      labelAnchor.current?.position.fromBufferAttribute(dronePos, i);
+      if (label.current && codes[i] !== lastCode.current) {
+        label.current.textContent = codes[i];
+        lastCode.current = codes[i];
+      }
+    }
     if (label.current) {
       const t = scrollState.t;
-      label.current.style.opacity = String(u.uDrones.value * (1 - ramp(t, 5.45, 5.7)));
+      label.current.style.opacity = i >= 0 ? String(u.uDrones.value * (1 - ramp(t, 5.45, 5.7))) : "0";
     }
   });
 

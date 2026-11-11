@@ -50,7 +50,7 @@ export default function Experience() {
         const near = Math.round(t);
         setNearest(near);
         setActive(Math.abs(t - near) < TEXT_WINDOW ? near : -1);
-        if (bar.current) bar.current.style.transform = `scaleX(${self.progress})`;
+        if (bar.current) bar.current.style.scale = `${self.progress} 1`;
       },
     });
 
@@ -120,7 +120,7 @@ export default function Experience() {
       </header>
 
       <div className="fixed inset-x-0 top-0 z-20 h-0.5 md:hidden" aria-hidden="true">
-        <div ref={bar} className="h-full origin-left scale-x-0 bg-gold" />
+        <div ref={bar} className="h-full origin-left bg-gold" style={{ scale: "0 1" }} />
       </div>
 
       <nav
@@ -231,10 +231,15 @@ export default function Experience() {
           <p
             lang="ar"
             dir="rtl"
-            className="order-1 font-kufi text-[clamp(2rem,4.6vw,4rem)] leading-[1.35] font-extrabold lg:order-2"
+            className="order-1 font-kufi text-[clamp(2rem,4.4vw,4rem)] leading-[1.35] font-extrabold lg:order-2"
           >
             {closing.verseAr.map((line, i) => (
-              <span key={line} className={`block ${i < closing.verseAr.length - 1 ? "text-night/45" : ""}`}>
+              <span
+                key={line}
+                className={`block whitespace-nowrap ${
+                  i < closing.verseAr.length - 1 ? "text-night/45" : "mt-[0.2em] text-[0.57em] leading-[1.5]"
+                }`}
+              >
                 {line}
               </span>
             ))}

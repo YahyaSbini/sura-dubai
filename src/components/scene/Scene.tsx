@@ -15,7 +15,10 @@ export default function Scene({ reducedMotion, onReady }: { reducedMotion: boole
   const [compact, setCompact] = useState(false);
 
   useEffect(() => {
-    setCompact(window.matchMedia("(max-width: 767px)").matches);
+    const narrow = window.matchMedia("(max-width: 767px)");
+    const onChange = () => setCompact(narrow.matches);
+    onChange();
+    narrow.addEventListener("change", onChange);
     let alive = true;
     loadCity().then((c) => {
       if (!alive) return;
@@ -24,6 +27,7 @@ export default function Scene({ reducedMotion, onReady }: { reducedMotion: boole
     });
     return () => {
       alive = false;
+      narrow.removeEventListener("change", onChange);
     };
   }, []);
 
