@@ -8,6 +8,11 @@
   --color-sand: #f3ede2;
   --color-mist: #9fb3cc;
   --color-ink-soft: #3a4b63;
+  --color-gold-deep: #9a6f1c;
+  --color-cyan-deep: #16708c;
+  --color-mist-deep: #6b7f99;
+  --color-alert: #c63c30;
+  --color-ok: #23845a;
   --font-sans: var(--font-grotesk-face), ui-sans-serif, system-ui, sans-serif;
   --font-kufi: var(--font-kufi-face), var(--font-grotesk-face), sans-serif;
   --ease-out-soft: cubic-bezier(0.2, 0.7, 0.2, 1);
@@ -210,4 +215,134 @@ html.lenis body {
   .scroll-cue::after {
     animation: none;
   }
+}
+
+/* ---------- Pitch (/pitch), light theme ---------- */
+
+.pitch {
+  color-scheme: light;
+}
+
+.pitch-wash {
+  position: absolute;
+  inset: 0;
+  transition: opacity 0.8s ease-out;
+}
+
+.pitch-wash--left {
+  background: linear-gradient(90deg, rgb(243 237 226 / 0.94) 0%, rgb(243 237 226 / 0.82) 38%, rgb(243 237 226 / 0) 62%);
+}
+
+.pitch-wash--full {
+  background: radial-gradient(120% 90% at 50% 45%, rgb(243 237 226 / 0.86) 0%, rgb(243 237 226 / 0.72) 60%, rgb(243 237 226 / 0.55) 100%);
+}
+
+.pitch-wash--top {
+  background: linear-gradient(180deg, rgb(243 237 226 / 0.88) 0%, rgb(243 237 226 / 0) 34%, rgb(243 237 226 / 0) 72%, rgb(243 237 226 / 0.7) 100%);
+}
+
+@media (max-width: 767px) {
+  .pitch-wash--left,
+  .pitch-wash--top {
+    background: rgb(243 237 226 / 0.8);
+  }
+}
+
+.pitch-card {
+  border-radius: 1rem;
+  background: rgb(255 255 255 / 0.72);
+  box-shadow:
+    0 0 0 1px rgb(11 27 51 / 0.07),
+    0 18px 40px -28px rgb(11 27 51 / 0.35);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.pitch-chip {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.75);
+  box-shadow: 0 0 0 1px rgb(11 27 51 / 0.12);
+  padding: 0 1.1rem;
+  font-size: 0.875rem;
+  color: var(--color-night);
+  backdrop-filter: blur(8px);
+  transition: background-color 0.2s ease-out;
+}
+
+.pitch-chip:hover {
+  background: #fff;
+}
+
+.pitch-arrow {
+  display: grid;
+  height: 2.75rem;
+  width: 2.75rem;
+  flex: none;
+  place-items: center;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.75);
+  box-shadow: 0 0 0 1px rgb(11 27 51 / 0.12);
+  color: var(--color-night);
+  backdrop-filter: blur(8px);
+  transition: background-color 0.2s ease-out;
+}
+
+.pitch-arrow:hover {
+  background: #fff;
+}
+
+.pitch-arrow--next {
+  background: var(--color-night);
+  color: var(--color-sand);
+}
+
+.pitch-arrow--next:hover {
+  background: var(--color-deep);
+}
+
+.pitch-arrow svg {
+  height: 1rem;
+  width: 1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.pitch-hook-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(60% 45% at 50% 50%, rgb(243 237 226 / 0.92) 0%, rgb(243 237 226 / 0.55) 60%, rgb(243 237 226 / 0) 100%);
+}
+
+/* Labels placed in the 3D scene */
+.pitch-tag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.9);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--tag) 45%, transparent);
+  color: var(--color-night);
+  font-size: 0.75rem;
+  line-height: 1;
+  white-space: nowrap;
+  transition: opacity 0.2s ease-out;
+}
+
+.pitch-tag b {
+  color: var(--tag);
+  font-weight: 600;
+}
+
+.pitch-tag--solid {
+  background: var(--tag);
+  color: #fff;
+  font-weight: 500;
 }
