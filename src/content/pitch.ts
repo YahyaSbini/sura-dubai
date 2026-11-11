@@ -316,13 +316,116 @@ export const financials = {
 
 export const team = {
   title: "The team.",
-  placeholder: true,
   members: [
-    { name: "Team member", role: "Founder & CEO", text: "Product and geospatial systems." },
-    { name: "Team member", role: "CTO", text: "Real-time systems and 3D." },
-    { name: "Team member", role: "Head of Aviation", text: "UTM and drone regulation." },
-    { name: "Team member", role: "Head of Partnerships", text: "Government and operators." },
+    { name: "Hessa Al Hajri", nameAr: "حصة الهاجري", initials: "HA" },
+    { name: "Ola Mohammed", nameAr: "علا محمد", initials: "OM" },
+    { name: "Yahya Sbini", nameAr: "يحيى سبيني", initials: "YS" },
+    { name: "Sara Al Kaabi", nameAr: "سارا الكعبي", initials: "SK" },
+    { name: "Maysa Al Boush", nameAr: "ميسا البوش", initials: "MA" },
   ],
+};
+
+/** "From Dubai to the human": graphics only, the speaker tells the story. Numbers are illustrative. */
+export const human = {
+  eyebrow: "From Dubai to the human",
+  titleAr: "من دبي إلى الإنسان",
+  questionAr: "شو صار أسهل أو أسرع بحياة الإنسان؟",
+  question: "What got easier or faster in people's lives?",
+  beats: ["Door to hand", "Access for everyone", "Emergency", "Neighbourhoods", "Field trial"],
+  note: "Illustrative numbers. Tested in the digital twin first, then in a field trial.",
+  doorToHand: {
+    rows: [
+      {
+        label: "Road delivery",
+        segs: [
+          { kind: "prep", name: "Dispatch", min: 8 },
+          { kind: "road", name: "On the road", min: 32 },
+          { kind: "hand", name: "", min: 2 },
+        ],
+      },
+      {
+        label: "Drone, far pickup point",
+        segs: [
+          { kind: "prep", name: "Prep", min: 5 },
+          { kind: "air", name: "In the air", min: 9 },
+          { kind: "walk", name: "Walk", min: 14 },
+          { kind: "wait", name: "Wait", min: 7 },
+        ],
+      },
+      {
+        label: "Drone, close pickup point",
+        segs: [
+          { kind: "prep", name: "Prep", min: 5 },
+          { kind: "air", name: "In the air", min: 9 },
+          { kind: "walk", name: "", min: 3 },
+          { kind: "wait", name: "", min: 1 },
+        ],
+      },
+    ],
+    legend: [
+      { kind: "prep", name: "Order and prep" },
+      { kind: "road", name: "On the road" },
+      { kind: "air", name: "In the air" },
+      { kind: "walk", name: "Walk to pickup" },
+      { kind: "wait", name: "Wait" },
+    ],
+    calloutKicker: "From order to parcel in hand",
+    callout: "Time saved in the air can be lost on foot.",
+  },
+  access: {
+    point: "Pickup point",
+    radius: "Short walk, step-free",
+    people: [
+      { id: "older", who: "Older residents", need: "Close, shaded, with seating", x: 52, y: 40 },
+      { id: "pod", who: "People of determination", need: "Step-free, reachable height", x: 268, y: 44 },
+      { id: "phone", who: "No smartphone", need: "SMS, call or printed slot", x: 70, y: 168 },
+    ],
+    changeTitle: "Plan changed",
+    changeBody: "Drone delayed 20 min. You choose what suits you.",
+    options: ["Wait 20 min", "Another pickup point", "Deliver tomorrow"],
+  },
+  emergency: {
+    from: "Call",
+    to: "Response team",
+    normal: 11.5,
+    priority: 6.5,
+    holds: [38, 62],
+    normalLabel: "Without priority, waits for other drones",
+    priorityLabel: "Ambulance drone with priority",
+    note: "Simulated in the digital twin: time until the medical bag reaches the response team.",
+    savedKicker: "Saved per emergency",
+    savedBody: "Every other drone in the area holds or gives way.",
+  },
+  neighbourhoods: {
+    fast: {
+      title: "Fastest route only",
+      body: "Every flight passes over the same homes. A crowd forms at the pickup entrance.",
+      stats: [
+        { value: "120", label: "flights a day over one street" },
+        { value: "9", label: "people waiting at once" },
+      ],
+    },
+    balanced: {
+      title: "Balanced in the digital twin",
+      body: "Corridors, stations and time slots are spread out. No street carries it all.",
+      stats: [
+        { value: "40", label: "flights a day, at most" },
+        { value: "3", label: "people waiting at once" },
+      ],
+    },
+  },
+  trial: {
+    center: "Pilot neighbourhood",
+    steps: [
+      { name: "Measure", detail: "Pickup time, ease, noise" },
+      { name: "Listen", detail: "Residents' feedback" },
+      { name: "Adjust", detail: "Station, route, timing" },
+      { name: "Test again", detail: "In the twin, then in the street" },
+    ],
+    expand: "Expand only when it works for people.",
+    openTitle: "Open with residents",
+    openBody: "We show what data we use and how anyone can send feedback. Supervisors see what changed and why.",
+  },
 };
 
 export const ask = {
@@ -354,5 +457,6 @@ export const slideNames = [
   "Competition",
   "Financials",
   "Team",
+  "From Dubai to the human",
   "The ask",
 ] as const;

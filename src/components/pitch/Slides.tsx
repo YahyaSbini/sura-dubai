@@ -27,7 +27,7 @@ import { Lockup, Mark } from "../Logo";
 
 /* ---------- Shared pieces ---------- */
 
-function Slide({ active, className = "", children }: { active: boolean; className?: string; children: ReactNode }) {
+export function Slide({ active, className = "", children }: { active: boolean; className?: string; children: ReactNode }) {
   return (
     <section
       data-active={active}
@@ -40,7 +40,7 @@ function Slide({ active, className = "", children }: { active: boolean; classNam
   );
 }
 
-function Line({ i = 0, className = "", children }: { i?: number; className?: string; children: ReactNode }) {
+export function Line({ i = 0, className = "", children }: { i?: number; className?: string; children: ReactNode }) {
   return (
     <div data-line style={{ ["--i" as string]: i }} className={className}>
       {children}
@@ -48,7 +48,7 @@ function Line({ i = 0, className = "", children }: { i?: number; className?: str
   );
 }
 
-function Eyebrow({ n, children, tone = "text-cyan-deep" }: { n: number; children: ReactNode; tone?: string }) {
+export function Eyebrow({ n, children, tone = "text-cyan-deep" }: { n: number; children: ReactNode; tone?: string }) {
   return (
     <p className={`eyebrow flex items-center gap-3 ${tone}`}>
       <span className="tabular-nums">{String(n).padStart(2, "0")}</span>
@@ -89,7 +89,7 @@ function LeftPanel({ children, wide = false }: { children: ReactNode; wide?: boo
 }
 
 /** Full-width content over the washed-out scene. */
-function FullPanel({ children }: { children: ReactNode }) {
+export function FullPanel({ children }: { children: ReactNode }) {
   return (
     <div data-scroll className="absolute inset-0 flex flex-col overflow-y-auto px-5 pt-24 pb-24 md:px-[6vw]">
       <div className="mx-auto my-auto w-full max-w-6xl">{children}</div>
@@ -282,7 +282,6 @@ export function HookSlide({ active, onDone }: { active: boolean; onDone: () => v
 /* ---------- 01 Introduction ---------- */
 
 export function IntroSlide({ active }: { active: boolean }) {
-  const c = intro.contact;
   return (
     <Slide active={active}>
       <LeftPanel>
@@ -300,18 +299,6 @@ export function IntroSlide({ active }: { active: boolean }) {
           </p>
           <p className="mt-2 text-[clamp(1.125rem,1.6vw,1.375rem)] text-ink-soft">{intro.tagline}</p>
           <p className="eyebrow mt-4 text-gold-deep">{intro.descriptor}</p>
-        </Line>
-        <Line i={3} className="pitch-card mt-10 max-w-md p-5">
-          <p className="flex items-center text-sm font-medium">
-            Contact
-            <Placeholder show={c.placeholder} />
-          </p>
-          <dl className="mt-3 grid grid-cols-[auto_1fr] gap-x-5 gap-y-1.5 text-[0.9375rem]">
-            <dt className="text-ink-soft">Email</dt>
-            <dd>{c.email}</dd>
-            <dt className="text-ink-soft">Web</dt>
-            <dd>{c.web}</dd>
-          </dl>
         </Line>
       </LeftPanel>
     </Slide>
@@ -907,27 +894,18 @@ export function TeamSlide({ active }: { active: boolean }) {
           <Eyebrow n={11}>Team</Eyebrow>
         </Line>
         <Line i={1}>
-          <h2 className={titleClass}>
-            {team.title}
-            <Placeholder show={team.placeholder} />
-          </h2>
+          <h2 className={titleClass}>{team.title}</h2>
         </Line>
-        <div className="mt-10 grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
           {team.members.map((m, i) => (
-            <Line key={`${m.role}`} i={2 + i} className="pitch-card p-5">
-              <div className="grid aspect-square w-20 place-items-center rounded-full bg-gradient-to-br from-deep to-night text-2xl font-medium text-sand">
-                {m.name === "Team member" ? (
-                  <Mark className="h-9 w-9" hole="#13294B" />
-                ) : (
-                  m.name
-                    .split(" ")
-                    .map((w) => w[0])
-                    .join("")
-                )}
+            <Line key={m.name} i={2 + i} className="pitch-card p-5">
+              <div className="grid aspect-square w-16 place-items-center rounded-full bg-gradient-to-br from-deep to-night text-xl font-medium text-sand">
+                {m.initials}
               </div>
-              <p className="mt-5 text-lg font-medium">{m.name}</p>
-              <p className="text-sm font-medium text-gold-deep">{m.role}</p>
-              <p className="mt-2 text-[0.9375rem] leading-snug text-ink-soft">{m.text}</p>
+              <p className="mt-5 text-lg leading-tight font-medium">{m.name}</p>
+              <p lang="ar" dir="rtl" className="mt-1 text-right font-kufi text-[0.9375rem] text-ink-soft">
+                {m.nameAr}
+              </p>
             </Line>
           ))}
         </div>
@@ -975,7 +953,7 @@ export function AskSlide({ active, onRestart }: { active: boolean; onRestart: ()
         <div className="grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:items-center lg:gap-16">
           <div>
             <Line>
-              <Eyebrow n={12}>The ask</Eyebrow>
+              <Eyebrow n={13}>The ask</Eyebrow>
             </Line>
             <Line i={1}>
               <h2 className={titleClass}>
