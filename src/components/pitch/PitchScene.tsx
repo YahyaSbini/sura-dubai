@@ -56,6 +56,7 @@ const KEYS: Key[] = [
   { at: [-20, 12, -22], look: [0, 2, -4], shift: 0, sway: 0.2 },
   { at: [26, 18, 4], look: [0, 1, 0], shift: 0, sway: 0.2 },
   { at: [12, 8, -24], look: [-1, 2, -8], shift: 0, sway: 0.2 },
+  { at: [-14, 16, 26], look: [0, 1, 2], shift: 0, sway: 0.2 }, // from Dubai to the human
   { at: [30, 34, 18], look: [0, 0, 0], shift: 0, sway: 0.2 },
 ];
 

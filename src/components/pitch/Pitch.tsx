@@ -20,10 +20,12 @@ import {
   TeamSlide,
   TractionSlide,
 } from "./Slides";
+import { HUMAN_BEATS, HumanSlide } from "./HumanSlide";
 
 const PitchScene = dynamic(() => import("./PitchScene"), { ssr: false });
 
 const LAST = slideNames.length - 1;
+const HUMAN = slideNames.indexOf("From Dubai to the human");
 
 /** Slides whose text sits in a left panel over the scene. */
 const LEFT_PANEL = new Set([1, 2, 4]);
@@ -35,14 +37,32 @@ export default function Pitch() {
   const [mission, setMission] = useState<Mission>(missions[0]);
   const [enabled, setEnabled] = useState<Set<EntityId>>(() => new Set(entities.map((e) => e.id)));
   const [route, setRoute] = useState<PlannedRoute | null>(null);
+  const [beat, setBeat] = useState(0);
+  const pos = useRef({ slide: 0, beat: 0 });
   const wheel = useRef({ sum: 0, lock: 0 });
   const touch = useRef<{ x: number; y: number } | null>(null);
 
+  useEffect(() => {
+    pos.current = { slide, beat };
+  }, [slide, beat]);
+
   const go = useCallback((n: number) => {
+    setBeat(0);
     setSlide(Math.max(0, Math.min(LAST, n)));
   }, []);
-  const next = useCallback(() => setSlide((s) => Math.min(LAST, s + 1)), []);
-  const prev = useCallback(() => setSlide((s) => Math.max(0, s - 1)), []);
+  /** On the human slide, next/prev step through its beats before leaving it. */
+  const next = useCallback(() => {
+    const { slide: s, beat: b } = pos.current;
+    if (s === HUMAN && b < HUMAN_BEATS - 1) return setBeat(b + 1);
+    setBeat(0);
+    setSlide(Math.min(LAST, s + 1));
+  }, []);
+  const prev = useCallback(() => {
+    const { slide: s, beat: b } = pos.current;
+    if (s === HUMAN && b > 0) return setBeat(b - 1);
+    setBeat(s - 1 === HUMAN ? HUMAN_BEATS - 1 : 0);
+    setSlide(Math.max(0, s - 1));
+  }, []);
 
   useEffect(() => {
     setReducedMotion(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
@@ -171,7 +191,8 @@ export default function Pitch() {
     <CompetitionSlide key="competition" active={slide === 9} />,
     <FinancialsSlide key="financials" active={slide === 10} />,
     <TeamSlide key="team" active={slide === 11} />,
-    <AskSlide key="ask" active={slide === 12} onRestart={() => go(0)} />,
+    <HumanSlide key="human" active={slide === HUMAN} n={HUMAN} beat={beat} onBeat={setBeat} />,
+    <AskSlide key="ask" active={slide === LAST} onRestart={() => go(0)} />,
   ];
 
   return (
