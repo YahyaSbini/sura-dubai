@@ -36,7 +36,7 @@ export type City = {
 };
 
 export async function loadCity(): Promise<City> {
-  const raw: RawCity = await (await fetch("/data/szr.json")).json();
+  const raw: RawCity = await (await fetch(`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/data/szr.json`)).json();
   const buildings = raw.buildings.map((b) => {
     const n = (b.length - 2) / 2;
     const ring = new Float32Array(n * 2);

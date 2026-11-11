@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "build:pages": "PAGES_BASE_PATH=/sura-dubai next build"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.9",
