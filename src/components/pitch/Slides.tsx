@@ -555,6 +555,69 @@ export function ProductSlide({ active }: { active: boolean }) {
 
 /* ---------- 05 Market ---------- */
 
+function UaeBars({ active }: { active: boolean }) {
+  const u = market.uae;
+  const max = Math.max(...u.bars.map((b) => b.value));
+  return (
+    <div className="grid h-full gap-4 sm:grid-cols-[1fr_auto]">
+      <div className="min-w-0">
+        <p className="text-sm font-medium">{u.title}</p>
+        <div className="mt-3 flex h-36 items-end gap-3 md:gap-6">
+          {u.bars.map((b, i) => (
+            <div key={b.year} className="flex h-full flex-1 flex-col justify-end">
+              <p className="text-[clamp(1rem,1.6vw,1.375rem)] font-medium">
+                <Counter value={b.value} active={active} decimals={1} prefix="$" suffix="M" />
+              </p>
+              <div
+                className={`mt-1 rounded-t-md ${i === u.bars.length - 1 ? "bg-gold" : "bg-cyan"}`}
+                style={{
+                  height: active ? `${Math.max(4, (b.value / max) * 70)}%` : "0%",
+                  transition: `height 1.1s cubic-bezier(.2,.7,.2,1) ${400 + i * 250}ms`,
+                }}
+              />
+              <p className="mt-2 text-[0.8125rem]">
+                <span className="font-medium">{b.year}</span> <span className="text-ink-soft">{b.kind}</span>
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="flex flex-col items-center justify-center rounded-xl bg-night px-4 py-4 text-center text-sand">
+        <p className="text-[clamp(1.5rem,2.4vw,2.25rem)] leading-none font-medium">
+          <Counter value={u.cagr} active={active} decimals={1} suffix="%" />
+        </p>
+        <p className="mt-1 text-[0.75rem] text-sand/70">Forecast CAGR</p>
+      </div>
+    </div>
+  );
+}
+
+function ShareRing({ value, active }: { value: number; active: boolean }) {
+  const r = 40;
+  const c = 2 * Math.PI * r;
+  return (
+    <div className="relative h-28 w-28 flex-none">
+      <svg viewBox="0 0 100 100" className="h-full w-full -rotate-90" aria-hidden="true">
+        <circle cx="50" cy="50" r={r} fill="none" stroke="rgb(11 27 51 / 0.08)" strokeWidth="11" />
+        <circle
+          cx="50"
+          cy="50"
+          r={r}
+          fill="none"
+          stroke="#D4A54A"
+          strokeWidth="11"
+          strokeDasharray={c}
+          strokeDashoffset={active ? c * (1 - value / 100) : c}
+          style={{ transition: "stroke-dashoffset 1.4s cubic-bezier(.2,.7,.2,1) 600ms" }}
+        />
+      </svg>
+      <p className="absolute inset-0 grid place-items-center text-2xl font-medium">
+        <Counter value={value} active={active} suffix="%" />
+      </p>
+    </div>
+  );
+}
+
 export function MarketSlide({ active }: { active: boolean }) {
   return (
     <Slide active={active}>
@@ -565,32 +628,41 @@ export function MarketSlide({ active }: { active: boolean }) {
         <Line i={1}>
           <h2 className={titleClass}>{market.title}</h2>
         </Line>
-        <div className="mt-10 grid gap-4 md:grid-cols-3">
+        <div className="mt-8 grid gap-3 md:grid-cols-3">
           {market.stats.map((s, i) => (
-            <Line key={s.label} i={2 + i} className="pitch-card p-6">
-              <p className="text-[clamp(3rem,6vw,5rem)] leading-none font-medium tracking-[-0.03em]">
+            <Line key={s.label} i={2 + i} className="pitch-card p-5">
+              <p className="text-[clamp(2.25rem,4.2vw,3.5rem)] leading-none font-medium tracking-[-0.03em]">
                 <Counter value={s.value} active={active} decimals={s.decimals} prefix={s.prefix} suffix={s.suffix} />
               </p>
-              <p className="mt-4 text-[1rem] text-ink-soft">
+              <p className="mt-3 text-[0.9375rem] text-ink-soft">
                 {s.label}
                 <Sup src={s.src} />
               </p>
             </Line>
           ))}
         </div>
-        <div className="mt-4 grid gap-4 md:grid-cols-2">
+        <div className="mt-3 grid gap-3 md:grid-cols-[2fr_1fr]">
+          <Line i={5} className="pitch-card p-5">
+            <UaeBars active={active} />
+          </Line>
+          <Line i={6} className="pitch-card flex items-center gap-5 p-5">
+            <ShareRing value={market.uae.dubaiShare} active={active} />
+            <p className="text-[0.9375rem] text-ink-soft">{market.uae.shareLabel}</p>
+          </Line>
+        </div>
+        <div className="mt-3 grid gap-3 md:grid-cols-3">
           {market.notes.map((n, i) => (
-            <Line key={n.text} i={5 + i} className="flex items-start gap-3 rounded-2xl bg-night p-5 text-sand">
-              <Mark className="mt-0.5 h-6 w-6 flex-none" hole="#0B1B33" />
-              <p className="text-[1.0625rem]">
+            <Line key={n.text} i={7 + i} className="flex items-start gap-3 rounded-2xl bg-night p-4 text-sand">
+              <Mark className="mt-0.5 h-5 w-5 flex-none" hole="#0B1B33" />
+              <p className="text-[0.9375rem]">
                 {n.text}
                 <Sup src={n.src} />
               </p>
             </Line>
           ))}
         </div>
-        <Line i={7}>
-          <ol className="mt-8 space-y-1 text-xs text-ink-soft">
+        <Line i={10}>
+          <ol className="mt-6 space-y-1 text-xs text-ink-soft">
             {sources.map((s) => (
               <li key={s.id}>
                 [{s.id}] {s.text}

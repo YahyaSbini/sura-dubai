@@ -242,7 +242,19 @@ export const market = {
   notes: [
     { text: "Dubai Municipality is already in: drone delivery in parks and beaches.", src: [2] },
     { text: "No unified sky operating system exists yet.", src: [] as number[] },
+    { text: "8 fundamentals turn the technology into a viable service.", src: [] as number[] },
   ],
+  uae: {
+    title: "UAE drone-delivery market",
+    bars: [
+      { year: "2025", kind: "Estimate", value: 35.8 },
+      { year: "2026", kind: "Estimate", value: 52.1 },
+      { year: "2032", kind: "Forecast", value: 515.3 },
+    ],
+    cagr: 46.4,
+    dubaiShare: 45,
+    shareLabel: "Dubai's estimated share of the UAE market, 2025",
+  },
 };
 
 export const businessModel = {
