@@ -22,8 +22,8 @@ export const hook = {
 
 export const intro = {
   name: "SURA Dubai",
-  taglineAr: "من هداية النجوم… إلى هندسة الغيوم",
-  tagline: "From the guidance of stars to engineering the clouds.",
+  taglineAr: "من هداية النجوم… إلى هندسة السماء",
+  tagline: "From the guidance of stars to engineering the sky.",
   descriptor: "Geospatial sky operating system",
   contact: {
     placeholder: true,
@@ -36,25 +36,52 @@ export const problem = {
   title: "Drone paths and regulations are not defined yet.",
   body: "Dubai is ready to fly drones over the city, but no one has drawn the roads of its sky.",
   points: [
-    { k: "No paths", v: "No shared map of where a drone may fly, at what height, or how to get from A to B." },
     {
-      k: "Scattered rules",
-      v: "Rules sit with Dubai Police, Dubai Municipality, the DCAA, the RTA and others, and each one keeps its own list.",
+      k: "No paths",
+      v: "No shared map of where a drone may fly, at what height, or how to get from A to B.",
     },
     {
       k: "No priority",
       v: "A firefighting or ambulance drone has no guaranteed lane, and nothing tells other drones to clear it.",
     },
-    { k: "Every operator alone", v: "Each company plans its own flights, so routes cross and conflicts happen in the air." },
+    {
+      k: "Every operator alone",
+      v: "Each company plans its own flights, so routes cross and conflicts happen in the air.",
+    },
   ],
 };
 
-export type EntityId = "twin" | "dcaa" | "police" | "municipality" | "rta" | "civil";
+export type EntityId =
+  "twin" | "dcaa" | "police" | "municipality" | "rta" | "civil";
 
-export const entities: { id: EntityId; name: string; short: string; color: string; gives: string }[] = [
-  { id: "twin", name: "Dubai Digital Twin", short: "Digital Twin", color: "#1E8FB0", gives: "3D buildings, heights, terrain" },
-  { id: "dcaa", name: "Dubai Civil Aviation Authority", short: "DCAA", color: "#7A55C7", gives: "Altitude limits, approach paths" },
-  { id: "police", name: "Dubai Police", short: "Dubai Police", color: "#3657C8", gives: "Security no-fly zones" },
+export const entities: {
+  id: EntityId;
+  name: string;
+  short: string;
+  color: string;
+  gives: string;
+}[] = [
+  {
+    id: "twin",
+    name: "Dubai Digital Twin",
+    short: "Digital Twin",
+    color: "#1E8FB0",
+    gives: "3D buildings, heights, terrain",
+  },
+  {
+    id: "dcaa",
+    name: "Dubai Civil Aviation Authority",
+    short: "DCAA",
+    color: "#7A55C7",
+    gives: "Altitude limits, approach paths",
+  },
+  {
+    id: "police",
+    name: "Dubai Police",
+    short: "Dubai Police",
+    color: "#3657C8",
+    gives: "Security no-fly zones",
+  },
   {
     id: "municipality",
     name: "Dubai Municipality",
@@ -62,8 +89,20 @@ export const entities: { id: EntityId; name: string; short: string; color: strin
     color: "#2E9D6A",
     gives: "Parks, beaches, landing pads",
   },
-  { id: "rta", name: "Roads & Transport Authority", short: "RTA", color: "#E0892B", gives: "Road buffers, no hovering over traffic" },
-  { id: "civil", name: "Dubai Civil Defence", short: "Civil Defence", color: "#D9473A", gives: "Emergency priority rules" },
+  {
+    id: "rta",
+    name: "Roads & Transport Authority",
+    short: "RTA",
+    color: "#E0892B",
+    gives: "Road buffers, no hovering over traffic",
+  },
+  {
+    id: "civil",
+    name: "Dubai Civil Defence",
+    short: "Civil Defence",
+    color: "#D9473A",
+    gives: "Emergency priority rules",
+  },
 ];
 
 export type MissionId = "fire" | "medical" | "delivery" | "inspection";
@@ -100,10 +139,16 @@ export const missions: Mission[] = [
     exempt: ["police", "municipality", "rta"],
     priority: true,
     rules: [
-      { by: "civil", text: "Priority 1. Every other drone in the area holds position." },
-      { by: "police", text: "May enter security zones with automatic notice to Dubai Police." },
+      {
+        by: "civil",
+        text: "Priority 1. Every other drone in the area holds position.",
+      },
+      {
+        by: "police",
+        text: "May enter security zones with automatic notice to Dubai Police.",
+      },
       { by: "dcaa", text: "Lowest layer A, straight-line corridor allowed." },
-      { by: "twin", text: "Keeps 30 m clear of every facade." },
+      { by: "twin", text: "Keeps 30 m clearance above every building roof." },
     ],
   },
   {
@@ -120,7 +165,10 @@ export const missions: Mission[] = [
     rules: [
       { by: "civil", text: "Priority 2. Drones on crossing routes give way." },
       { by: "police", text: "Security zones open with automatic notice." },
-      { by: "municipality", text: "Lands only on registered hospital or park pads." },
+      {
+        by: "municipality",
+        text: "Lands only on registered hospital or park pads.",
+      },
       { by: "dcaa", text: "Layer B, speed up to 90 km/h." },
     ],
   },
@@ -138,7 +186,10 @@ export const missions: Mission[] = [
     rules: [
       { by: "dcaa", text: "Layer C only, scheduled slots." },
       { by: "police", text: "Never enters security zones." },
-      { by: "municipality", text: "No flights over parks and beaches in opening hours." },
+      {
+        by: "municipality",
+        text: "No flights over parks and beaches in opening hours.",
+      },
       { by: "rta", text: "No hovering above the road." },
     ],
   },
@@ -175,18 +226,65 @@ export type Zone = {
 
 /** Dummy restricted zones placed along Sheikh Zayed Road. */
 export const zones: Zone[] = [
-  { by: "police", name: "Security zone", along: 0.34, side: -1.6, radius: 2.2, layers: [0, 1, 2] },
-  { by: "police", name: "VIP corridor", along: -0.62, side: 2.0, radius: 1.7, layers: [0, 1, 2] },
-  { by: "dcaa", name: "Helicopter approach", along: 0.72, side: 1.4, radius: 2.6, layers: [1, 2] },
-  { by: "municipality", name: "Park, no overflight", along: -0.1, side: 3.0, radius: 1.9, layers: [0, 1, 2] },
-  { by: "municipality", name: "Beach, no overflight", along: -0.38, side: -3.2, radius: 1.6, layers: [0, 1] },
-  { by: "rta", name: "Interchange buffer", along: 0.06, side: 0, radius: 1.4, layers: [0] },
+  {
+    by: "police",
+    name: "Security zone",
+    along: 0.34,
+    side: -1.6,
+    radius: 2.2,
+    layers: [0, 1, 2],
+  },
+  {
+    by: "police",
+    name: "VIP corridor",
+    along: -0.62,
+    side: 2.0,
+    radius: 1.7,
+    layers: [0, 1, 2],
+  },
+  {
+    by: "dcaa",
+    name: "Helicopter approach",
+    along: 0.72,
+    side: 1.4,
+    radius: 2.6,
+    layers: [1, 2],
+  },
+  {
+    by: "municipality",
+    name: "Park, no overflight",
+    along: -0.1,
+    side: 3.0,
+    radius: 1.9,
+    layers: [0, 1, 2],
+  },
+  {
+    by: "municipality",
+    name: "Beach, no overflight",
+    along: -0.38,
+    side: -3.2,
+    radius: 1.6,
+    layers: [0, 1],
+  },
+  {
+    by: "rta",
+    name: "Interchange buffer",
+    along: 0.06,
+    side: 0,
+    radius: 1.4,
+    layers: [0],
+  },
 ];
 
 export const solution = {
   title: "SURA turns the city's data into defined sky roads.",
   body: "We take the 3D city from the Digital Twin and the drone rules of every authority, then plan the path for each mission: firefighting, emergency, delivery and more.",
-  steps: ["3D city from the Digital Twin", "Rules from every authority", "Sky divided into cells", "A legal path for every mission"],
+  steps: [
+    "3D city from the Digital Twin",
+    "Rules from every authority",
+    "Sky divided into cells",
+    "A legal path for every mission",
+  ],
 };
 
 export const product = {
@@ -227,44 +325,102 @@ export const sources: Source[] = [
     id: 1,
     text: "Dubai Civil Aviation Authority via Khaleej Times (Oct 2025). Drone deliveries in Dubai: 30% city coverage by 2026, 70% in 5 years.",
   },
-  { id: 2, text: "WAM – Emirates News Agency (May 2026). Dubai Municipality to launch drone delivery in parks, beaches." },
-  { id: 3, text: "MarketsandMarkets. Unmanned Traffic Management (UTM) Market – Global Forecast to 2030." },
-  { id: 4, text: "Research Corridor (Oct 2025). Unmanned Traffic Management Market Report, 2025–2030." },
+  {
+    id: 2,
+    text: "WAM – Emirates News Agency (May 2026). Dubai Municipality to launch drone delivery in parks, beaches.",
+  },
+  {
+    id: 3,
+    text: "MarketsandMarkets. Unmanned Traffic Management (UTM) Market – Global Forecast to 2030.",
+  },
+  {
+    id: 4,
+    text: "Research Corridor (Oct 2025). Unmanned Traffic Management Market Report, 2025–2030.",
+  },
+  {
+    id: 5,
+    text: "P&S Intelligence. UAE Drone Delivery Market Report, 2025–2032.",
+  },
 ];
 
 export const market = {
   title: "The sky above Dubai is opening now.",
   stats: [
-    { value: 30, suffix: "%", label: "city coverage by drone delivery by 2026", src: [1] },
+    {
+      value: 30,
+      suffix: "%",
+      label: "city coverage by drone delivery by 2026",
+      src: [1],
+    },
     { value: 70, suffix: "%", label: "coverage within 5 years", src: [1] },
-    { prefix: "$", value: 1.1, decimals: 1, suffix: "B", label: "UTM market by 2030", src: [3, 4] },
+    {
+      prefix: "$",
+      value: 1.1,
+      decimals: 1,
+      suffix: "B",
+      label: "UTM market by 2030",
+      src: [3, 4],
+    },
   ],
   notes: [
-    { text: "Dubai Municipality is already in: drone delivery in parks and beaches.", src: [2] },
-    { text: "No unified sky operating system exists yet.", src: [] as number[] },
-    { text: "8 fundamentals turn the technology into a viable service.", src: [] as number[] },
+    {
+      text: "Dubai Municipality is already in: drone delivery in parks and beaches.",
+      src: [2],
+    },
+    {
+      text: "No unified sky operating system exists yet.",
+      src: [] as number[],
+    },
+    {
+      text: "8 fundamentals turn the technology into a viable service.",
+      src: [] as number[],
+    },
   ],
   uae: {
-    title: "UAE drone-delivery market",
+    title: "UAE drone-delivery market, 2025–2032",
+    src: [5],
+    by: "P&S Intelligence",
+    byText:
+      "A leading market research and consulting services provider to clients across the globe.",
     bars: [
-      { year: "2025", kind: "Estimate", value: 35.8 },
-      { year: "2026", kind: "Estimate", value: 52.1 },
+      { year: "2025", kind: "", value: 35.8 },
+      { year: "2026", kind: "", value: 52.1 },
       { year: "2032", kind: "Forecast", value: 515.3 },
     ],
     cagr: 46.4,
     dubaiShare: 45,
-    shareLabel: "Dubai's estimated share of the UAE market, 2025",
+    shareLabel: "Dubai's share of the UAE market, 2025",
   },
 };
 
 export const businessModel = {
   title: "Five ways SURA earns.",
   streams: [
-    { name: "Platform subscriptions", text: "Infrastructure as a service for authorities and operators.", share: 40 },
-    { name: "Certification fees", text: "Certify drones, pilots and routes on the system.", share: 15 },
-    { name: "SURA Link sales", text: "On-board unit for every drone in Dubai's sky.", share: 25 },
-    { name: "Hardware commissions", text: "From drone and sensor partners we bring customers to.", share: 8 },
-    { name: "Developer APIs", text: "Pay per route request for operators and apps.", share: 12 },
+    {
+      name: "Platform subscriptions",
+      text: "Infrastructure as a service for authorities and operators.",
+      share: 40,
+    },
+    {
+      name: "Certification fees",
+      text: "Certify drones, pilots and routes on the system.",
+      share: 15,
+    },
+    {
+      name: "SURA Link sales",
+      text: "On-board unit for every drone in Dubai's sky.",
+      share: 25,
+    },
+    {
+      name: "Hardware commissions",
+      text: "From drone and sensor partners we bring customers to.",
+      share: 8,
+    },
+    {
+      name: "Developer APIs",
+      text: "Pay per route request for operators and apps.",
+      share: 12,
+    },
   ],
   /** Revenue split is dummy. */
   placeholder: true,
@@ -287,13 +443,28 @@ export const traction = {
 };
 
 export const goToMarket = {
-  title: "From one pilot to the Gulf's sky.",
+  title: "From one pilot to every emirate's sky.",
   steps: [
-    { name: "Municipality pilot", when: "2026", text: "Sheikh Zayed Road corridor with Dubai Municipality." },
-    { name: "Onboard operators", when: "2027", text: "Delivery, inspection and emergency fleets on SURA Link." },
-    { name: "Open ecosystem", when: "2027", text: "Developer API and the public SURA app." },
-    { name: "UAE expansion", when: "2028", text: "Abu Dhabi, Sharjah and the other emirates." },
-    { name: "GCC scale-up", when: "2029+", text: "Riyadh, Doha and other GCC cities." },
+    {
+      name: "Municipality pilot",
+      when: "2026",
+      text: "Sheikh Zayed Road corridor with Dubai Municipality.",
+    },
+    {
+      name: "Onboard operators",
+      when: "2027",
+      text: "Delivery, inspection and emergency fleets on SURA Link.",
+    },
+    {
+      name: "Open ecosystem",
+      when: "2027",
+      text: "Developer API and the public SURA app.",
+    },
+    {
+      name: "UAE expansion",
+      when: "2028",
+      text: "Abu Dhabi, Sharjah and the other emirates.",
+    },
   ],
 };
 
@@ -343,7 +514,13 @@ export const human = {
   titleAr: "من دبي إلى الإنسان",
   questionAr: "شو صار أسهل أو أسرع بحياة الإنسان؟",
   question: "What got easier or faster in people's lives?",
-  beats: ["Door to hand", "Access for everyone", "Emergency", "Neighbourhoods", "Field trial"],
+  beats: [
+    "Door to hand",
+    "Access for everyone",
+    "Emergency",
+    "Neighbourhoods",
+    "Field trial",
+  ],
   note: "Illustrative numbers. Tested in the digital twin first, then in a field trial.",
   doorToHand: {
     rows: [
@@ -388,9 +565,27 @@ export const human = {
     point: "Pickup point",
     radius: "Short walk, step-free",
     people: [
-      { id: "older", who: "Older residents", need: "Close, shaded, with seating", x: 52, y: 40 },
-      { id: "pod", who: "People of determination", need: "Step-free, reachable height", x: 268, y: 44 },
-      { id: "phone", who: "No smartphone", need: "SMS, call or printed slot", x: 70, y: 168 },
+      {
+        id: "older",
+        who: "Older residents",
+        need: "Close, shaded, with seating",
+        x: 52,
+        y: 40,
+      },
+      {
+        id: "pod",
+        who: "People of determination",
+        need: "Step-free, reachable height",
+        x: 268,
+        y: 44,
+      },
+      {
+        id: "phone",
+        who: "No smartphone",
+        need: "SMS, call or printed slot",
+        x: 70,
+        y: 168,
+      },
     ],
     changeTitle: "Plan changed",
     changeBody: "Drone delayed 20 min. You choose what suits you.",
@@ -436,7 +631,8 @@ export const human = {
     ],
     expand: "Expand only when it works for people.",
     openTitle: "Open with residents",
-    openBody: "We show what data we use and how anyone can send feedback. Supervisors see what changed and why.",
+    openBody:
+      "We show what data we use and how anyone can send feedback. Supervisors see what changed and why.",
   },
 };
 
@@ -451,9 +647,11 @@ export const ask = {
     { name: "SURA Link hardware", share: 20, color: "#D4A54A" },
     { name: "Operations", share: 10, color: "#9FB3CC" },
   ],
-  partners: "We are also looking for a pilot partner in government and two launch operators.",
+  partners:
+    "We are also looking for a pilot partner in government and two launch operators.",
   verseAr: ["كان السُّرى قديماً", "أن نهتدي بالنجوم", "واليوم نُهندس للسماء طرقها"],
-  verseEn: "Sura once meant finding our way by the stars. Today we engineer the roads of the sky.",
+  verseEn:
+    "Sura once meant finding our way by the stars. Today we engineer the roads of the sky.",
 };
 
 export const slideNames = [
