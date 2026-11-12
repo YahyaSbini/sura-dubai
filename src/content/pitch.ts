@@ -22,8 +22,8 @@ export const hook = {
 
 export const intro = {
   name: "SURA Dubai",
-  taglineAr: "من هداية النجوم… إلى هندسة الغيوم",
-  tagline: "From the guidance of stars to engineering the clouds.",
+  taglineAr: "من هداية النجوم… إلى هندسة السماء",
+  tagline: "From the guidance of stars to engineering the sky.",
   descriptor: "Geospatial sky operating system",
   contact: {
     placeholder: true,
@@ -37,10 +37,6 @@ export const problem = {
   body: "Dubai is ready to fly drones over the city, but no one has drawn the roads of its sky.",
   points: [
     { k: "No paths", v: "No shared map of where a drone may fly, at what height, or how to get from A to B." },
-    {
-      k: "Scattered rules",
-      v: "Rules sit with Dubai Police, Dubai Municipality, the DCAA, the RTA and others, and each one keeps its own list.",
-    },
     {
       k: "No priority",
       v: "A firefighting or ambulance drone has no guaranteed lane, and nothing tells other drones to clear it.",
@@ -103,7 +99,7 @@ export const missions: Mission[] = [
       { by: "civil", text: "Priority 1. Every other drone in the area holds position." },
       { by: "police", text: "May enter security zones with automatic notice to Dubai Police." },
       { by: "dcaa", text: "Lowest layer A, straight-line corridor allowed." },
-      { by: "twin", text: "Keeps 30 m clear of every facade." },
+      { by: "twin", text: "Keeps 30 m clearance above every building roof." },
     ],
   },
   {
@@ -230,6 +226,7 @@ export const sources: Source[] = [
   { id: 2, text: "WAM – Emirates News Agency (May 2026). Dubai Municipality to launch drone delivery in parks, beaches." },
   { id: 3, text: "MarketsandMarkets. Unmanned Traffic Management (UTM) Market – Global Forecast to 2030." },
   { id: 4, text: "Research Corridor (Oct 2025). Unmanned Traffic Management Market Report, 2025–2030." },
+  { id: 5, text: "P&S Intelligence. UAE Drone Delivery Market Report, 2025–2032." },
 ];
 
 export const market = {
@@ -245,15 +242,18 @@ export const market = {
     { text: "8 fundamentals turn the technology into a viable service.", src: [] as number[] },
   ],
   uae: {
-    title: "UAE drone-delivery market",
+    title: "UAE drone-delivery market, 2025–2032",
+    src: [5],
+    by: "P&S Intelligence",
+    byText: "A leading market research and consulting services provider to clients across the globe.",
     bars: [
-      { year: "2025", kind: "Estimate", value: 35.8 },
-      { year: "2026", kind: "Estimate", value: 52.1 },
+      { year: "2025", kind: "", value: 35.8 },
+      { year: "2026", kind: "", value: 52.1 },
       { year: "2032", kind: "Forecast", value: 515.3 },
     ],
     cagr: 46.4,
     dubaiShare: 45,
-    shareLabel: "Dubai's estimated share of the UAE market, 2025",
+    shareLabel: "Dubai's share of the UAE market, 2025",
   },
 };
 
@@ -287,13 +287,12 @@ export const traction = {
 };
 
 export const goToMarket = {
-  title: "From one pilot to the Gulf's sky.",
+  title: "From one pilot to every emirate's sky.",
   steps: [
     { name: "Municipality pilot", when: "2026", text: "Sheikh Zayed Road corridor with Dubai Municipality." },
     { name: "Onboard operators", when: "2027", text: "Delivery, inspection and emergency fleets on SURA Link." },
     { name: "Open ecosystem", when: "2027", text: "Developer API and the public SURA app." },
     { name: "UAE expansion", when: "2028", text: "Abu Dhabi, Sharjah and the other emirates." },
-    { name: "GCC scale-up", when: "2029+", text: "Riyadh, Doha and other GCC cities." },
   ],
 };
 

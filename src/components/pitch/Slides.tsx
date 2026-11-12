@@ -324,7 +324,11 @@ export function ProblemSlide({ active }: { active: boolean }) {
         </Line>
         <div className="mt-8 grid gap-3 sm:grid-cols-2">
           {problem.points.map((p, i) => (
-            <Line key={p.k} i={3 + i} className="pitch-card p-4">
+            <Line
+              key={p.k}
+              i={3 + i}
+              className={`pitch-card p-4 ${problem.points.length % 2 && i === problem.points.length - 1 ? "sm:col-span-2" : ""}`}
+            >
               <p className="flex items-center gap-2.5 font-medium">
                 <span className="grid h-6 w-6 flex-none place-items-center rounded-full bg-alert/12 text-xs text-alert tabular-nums">
                   {i + 1}
@@ -561,8 +565,21 @@ function UaeBars({ active }: { active: boolean }) {
   return (
     <div className="grid h-full gap-4 sm:grid-cols-[1fr_auto]">
       <div className="min-w-0">
-        <p className="text-sm font-medium">{u.title}</p>
-        <div className="mt-3 flex h-36 items-end gap-3 md:gap-6">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <p className="text-sm font-medium">
+            {u.title}
+            <Sup src={u.src} />
+          </p>
+          <p
+            title={u.byText}
+            className="flex items-center gap-1.5 rounded-full border border-night/10 bg-sand/70 py-1 pr-3 pl-1.5 text-[0.75rem]"
+          >
+            <Mark className="h-4 w-4 flex-none" color="#B88324" hole="#F3EDE2" />
+            <span className="text-ink-soft">Data by</span> <span className="font-medium">{u.by}</span>
+          </p>
+        </div>
+        <p className="mt-1 max-w-md text-[0.75rem] leading-snug text-ink-soft">{u.byText}</p>
+        <div className="mt-3 flex h-28 items-end gap-3 md:gap-6">
           {u.bars.map((b, i) => (
             <div key={b.year} className="flex h-full flex-1 flex-col justify-end">
               <p className="text-[clamp(1rem,1.6vw,1.375rem)] font-medium">
@@ -771,7 +788,7 @@ export function GoToMarketSlide({ active }: { active: boolean }) {
         <Line i={1}>
           <h2 className={titleClass}>{goToMarket.title}</h2>
         </Line>
-        <ol className="relative mt-12 grid gap-6 md:grid-cols-5 md:gap-4">
+        <ol className="relative mt-12 grid gap-6 md:grid-cols-4 md:gap-4">
           <svg className="pointer-events-none absolute top-0 left-0 hidden h-8 w-full md:block" preserveAspectRatio="none" viewBox="0 0 100 10" aria-hidden="true">
             <path
               d="M2 8 C 30 8, 60 6, 98 2"
